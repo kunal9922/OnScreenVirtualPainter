@@ -24,11 +24,12 @@ header1 = cv2.resize(header1, (720, 130))
 detector = htm.HandDetector(detectionCon=0.85)
 
 #read from WebCam here
-cap = cv2.VideoCapture(r"dataSets//handTestVideo.mp4")
+cap = cv2.VideoCapture("dataSets//sampleTestVideo.mp4")
+print(cap.isOpened())
 while cap.isOpened():
       #1. Import Image
       success, imgFrame = cap.read()
-      imgFrame = cv2.resize(imgFrame, (720, 480))
+      imgFrame = cv2.resize(imgFrame, (720, 960))
       imgFrame = cv2.flip(imgFrame, 1)
 
       #2. FindHand LandMarks
@@ -45,12 +46,14 @@ while cap.isOpened():
             
             #3. Check which fingers are up
             fingers = detector.fingersUp()
-            print(fingers)
+           
                   
             #4. If selection mode - Two fingers are up
+            if fingers[1] and fingers[2]:
+                  print("Selection Mode")
             #5. If Drawing Mode - Index finger is Up
-
-      
+            if fingers[1] and fingers[2] == False:
+                  print("Drawing mode")
       
       #Setting the header image
       imgFrame[0:130, 0:720] = header1

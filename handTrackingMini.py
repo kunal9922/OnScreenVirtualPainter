@@ -38,23 +38,23 @@ class HandDetector():
                   for id, lm in enumerate(myHand.landmark):
                         h, w, c = img.shape
                         cx, cy = int(lm.x * w), int(lm.y * h)
-                        lmList.append([id, cx, cy])
+                        self.lmList.append([id, cx, cy])
                         
 
-            return lmList
+            return self.lmList
 
-      def fingesUp(self):
+      def fingersUp(self):
             fingers = []  # this list tell us which finger is up and which finger is down
       
             # Thumb
-            if self.lmList[self.tipIds[0]][1] > self.lmList[self.tipIds[0] - 1][1]:
+            if self.lmList[self.tipIds[0]][1] < self.lmList[self.tipIds[0] - 1][1]:
                   fingers.append(1)
             else:
                   fingers.append(0)
 
             # 4 Fingers
             for id in range(1,5):
-                  if self.lmList[self.tipIds[id]][2] < self.lmList(self.tipIds[id] - 2][2]:
+                  if self.lmList[self.tipIds[id]][2] < self.lmList[self.tipIds[id] - 2][2]:
                         fingers.append(1)
                   else:
                         fingers.append(0)
