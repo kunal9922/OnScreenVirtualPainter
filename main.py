@@ -37,14 +37,18 @@ while cap.isOpened():
 
       # check if Hand is detected or not if yes then process farther
       if len(lmList) != 0:
+            fingers = [] # this list tell us which finger is up and which finger is down
+            
             #tip of index and middle fingers
             x1, y1 = lmList[8][1:]  #  Index finger coordinates
             x2, y2 = lmList[12][1:]
-            print(x1,y1)
-            print(x2, y2)
-      #3. Check which fingers are up
-      #4. If selection mode - Two fingers are up
-      #5. If Drawing Mode - Index finger is Up
+            
+            #3. Check which fingers are up
+            fingers = detector.fingersUp()
+            print(fingers)
+                  
+            #4. If selection mode - Two fingers are up
+            #5. If Drawing Mode - Index finger is Up
 
       
       

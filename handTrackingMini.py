@@ -14,7 +14,8 @@ class HandDetector():
             self.hands = self.mpHands.Hands(self.mode, self.maxHands,
                                                                                           self.detectionCon, self.trackCon)
             self.mpDraw = mp.solutions.drawing_utils # -----this method allows us to drawlines on hands
-
+            self.tipIds = [4, 8, 12, 16, 20] # ids for every finger in our hands
+            
       def findHands(self, img, draw=True):
             imgRGB = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
             self.results = self.hands.process(imgRGB)  #           result contains the detected landmarks as dictionary 
@@ -30,7 +31,7 @@ class HandDetector():
             return img
 
       def findPosition(self, img, handNo=0, draw=True):
-            lmList = [] # will store landmarks
+            self.lmList = [] # will store landmarks
              # --- detected the hand 
             if self.results.multi_hand_landmarks:
                   myHand = self.results.multi_hand_landmarks[handNo]
@@ -41,6 +42,24 @@ class HandDetector():
                         
 
             return lmList
+
+      def fingesUp(self):
+            fingers = []  # this list tell us which finger is up and which finger is down
+      
+            # Thumb
+            if self.lmList[self.tipIds[0]][1] > self.lmList[self.tipIds[0] - 1][1]:
+                  fingers.append(1)
+            else:
+                  fingers.append(0)
+
+            # 4 Fingers
+            for id in range(1,5):
+                  if self.lmList[self.tipIds[id]][2] < self.lmList(self.tipIds[id] - 2][2]:
+                        fingers.append(1)
+                  else:
+                        fingers.append(0)
+                        
+            return fingers
 
 def workWithHandsDetect():
       pTime = 0
