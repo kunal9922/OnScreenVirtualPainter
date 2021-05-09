@@ -17,6 +17,13 @@ for imgPath in myList:
 
 print(len(headerImgs))
 
+# Initials drawing points
+x0, y0 = 0, 0
+brushThickness = 5
+eraserThickness = 10
+
+# firstly draw on canvas
+canvas = np.zeros((720, 960), dtype=np.uint8)
 #deafault header image for selected purple
 header = headerImgs[0]
 header = cv2.resize(header, (720, 130))
@@ -76,10 +83,25 @@ while cap.isOpened():
             if fingers[1] and fingers[2] == False:
                   cv2.circle(imgFrame, (x1, y1), 15, drawColor, cv2.FILLED)
                   print("Drawing mode")
+                  # checking if draw is just initate now
+                  if x0 == 0 and y0 == 0:
+                        x0, y0 = x1 , y1
+
+                  if drawColor == (0,0,0): # Erase the color which had been drawed
+                        cv2.line(imgFrame, (x0, y0), (x1, y1), drawColor, eraserThickness)
+                        cv2.line(canvas, (x0, y0), (x1, y1), drawColor, eraserThickness)
+
+                  else:
+                        #drawing Go!
+                        cv2.line(imgFrame, (x0, y0), (x1, y1), drawColor, brushThickness)
+                        cv2.line(canvas, (x0, y0), (x1, y1), drawColor, brushThickness)
+                  x0, y0 = x1, y1 # set current state to previous state
+                  
                   
       
       #Setting the header image
       imgFrame[0:130, 0:720] = header
       cv2.imshow("TestFrames", imgFrame)
+      cv2.imshow("Canvas", canvas)
       
       cv2.waitKey(1)
